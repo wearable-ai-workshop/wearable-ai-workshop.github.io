@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wearable AI Workshop @ ECCV 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & Variables ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-dark: #0d0f14;
+      --bg-card: #161a24;
+      --bg-card2: #1c2130;
+      --accent: #6c63ff;
+      --accent2: #00d4aa;
+      --accent3: #ff6b6b;
+      --text: #e8eaf0;
+      --text-muted: #8892a4;
+      --border: rgba(255,255,255,0.08);
+      --radius: 12px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      padding: 80px 28px 60px;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,212,170,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    #hero .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    #hero .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.4);
+      color: #a89dff;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    #hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 4px;
+      position: relative;
+      background: linear-gradient(135deg, #fff 30%, #a89dff 70%, #00d4aa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    #hero .hero-subtitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1rem, 2.8vw, 1.6rem);
+      font-weight: 500;
+      color: rgba(255,255,255,0.82);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    #hero .tagline {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      position: relative;
+    }
+    #hero .hero-meta {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+      position: relative;
+    }
+    #hero .hero-meta .chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+    #hero .hero-meta .chip .icon { font-size: 1rem; }
+    #hero .cta-group { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: #7c75ff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(108,99,255,0.4); text-decoration: none; }
+    .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--bg-card); transform: translateY(-1px); text-decoration: none; }
+
+    /* ── Sticky Nav ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(13,15,20,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    }
+    /* Offset hero section so it isn't hidden behind fixed nav */
+    #hero { padding-top: 0; }
+    nav .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    nav .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      padding: 14px 0;
+      white-space: nowrap;
+    }
+    nav .nav-logo span { color: var(--accent); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+    nav ul li a {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 14px 12px;
+      transition: color 0.2s;
+    }
+    nav ul li a:hover { color: var(--text); text-decoration: none; }
+    nav ul li a.nav-active { color: var(--accent); font-weight: 600; text-decoration: none; }
+
+    /* ── Section ── */
+    section { padding: 80px 0; }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    h3 { font-size: 1.05rem; font-weight: 600; color: #fff; margin: 24px 0 10px; }
+    p { color: var(--text-muted); margin-bottom: 14px; }
+    p strong { color: var(--text); }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .card-grid { display: grid; gap: 20px; }
+    .card-grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    /* Challenge grid: 3 cols, 2 rows — all cells in same row share height */
+    .card-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      align-items: stretch;
+    }
+    .card-grid-3 > div {
+      display: contents; /* flatten wrappers so children go directly into grid */
+    }
+    .card-grid-3 > div:nth-child(1) .challenge-card { grid-column: 1; grid-row: 1; }
+    .card-grid-3 > div:nth-child(2) .challenge-card { grid-column: 2; grid-row: 1; }
+    .card-grid-3 > div:nth-child(3) .challenge-card { grid-column: 3; grid-row: 1; }
+    .card-grid-3 > div:nth-child(1) .gif-preview-card { grid-column: 1; grid-row: 2; }
+    .card-grid-3 > div:nth-child(2) .gif-preview-card { grid-column: 2; grid-row: 2; }
+    .card-grid-3 > div:nth-child(3) .gif-preview-card { grid-column: 3; grid-row: 2; }
+    .challenge-card { display: flex; flex-direction: column; }
+    .challenge-card p { flex: 1; }
+
+    /* ── Highlight ── */
+    .highlight-card {
+      background: linear-gradient(135deg, rgba(108,99,255,0.15) 0%, rgba(0,212,170,0.1) 100%);
+      border: 1px solid rgba(108,99,255,0.3);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 32px;
+    }
+    .highlight-card p { color: var(--text); margin: 0; font-size: 1.05rem; }
+
+    /* ── Topics ── */
+    .topic-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .topic-item:last-child { border-bottom: none; }
+    .topic-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 8px;
+    }
+    .topic-item strong { color: var(--text); display: block; margin-bottom: 4px; }
+
+    /* ── Challenge Cards ── */
+    .challenge-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .challenge-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .challenge-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .card-grid-3 > div:nth-child(1) .challenge-card::before { background: var(--accent); }
+    .card-grid-3 > div:nth-child(2) .challenge-card::before { background: var(--accent2); }
+    .card-grid-3 > div:nth-child(3) .challenge-card::before { background: var(--accent3); }
+    .challenge-num {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .card-grid-3 > div:nth-child(1) .challenge-num { color: var(--accent); }
+    .card-grid-3 > div:nth-child(2) .challenge-num { color: var(--accent2); }
+    .card-grid-3 > div:nth-child(3) .challenge-num { color: var(--accent3); }
+    .challenge-card h3 { margin-top: 0; font-size: 1.05rem; }
+    .challenge-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+    /* ── GIF preview cards ── */
+    .gif-preview-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-top: 12px;
+    }
+    .gif-preview-card .gif-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .gif-grid img {
+      width: 100%;
+      aspect-ratio: 9/16;
+      object-fit: cover;
+      border-radius: 6px;
+      display: block;
+    }
+    .challenge-meta span {
+      font-size: 0.78rem;
+      background: rgba(255,255,255,0.06);
+      padding: 4px 10px;
+      border-radius: 100px;
+      color: var(--text-muted);
+    }
+
+    /* ── Dataset Table ── */
+    .data-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .data-table th {
+      background: var(--bg-card2);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .data-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr.ours td { color: var(--text); font-weight: 600; }
+    .data-table tr.ours td:first-child { color: var(--accent2); }
+    .data-table .check { color: var(--accent2); }
+    .data-table .cross { color: #444; }
+
+    /* ── People Grid ── */
+    .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 24px; }
+    .person-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .person-card:hover { border-color: rgba(108,99,255,0.4); transform: translateY(-2px); }
+    .person-avatar {
+      width: 90px; height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 14px;
+      overflow: hidden;
+      border: 2px solid var(--border);
+      background: var(--bg-card2);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .person-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+    .person-name { font-weight: 700; font-size: 0.92rem; color: #fff; margin-bottom: 4px; }
+    .person-affil { font-size: 0.78rem; color: var(--accent2); margin-bottom: 4px; }
+    .person-role { font-size: 0.75rem; color: var(--text-muted); }
+    .person-bio { font-size: 0.78rem; color: var(--text-muted); margin-top: 10px; text-align: left; line-height: 1.5; }
+
+    /* ── Schedule ── */
+    .schedule-item {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .schedule-item:last-child { border-bottom: none; }
+    .schedule-time {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      padding-top: 2px;
+    }
+    .schedule-event { font-weight: 600; color: #fff; font-size: 0.9rem; }
+    .schedule-detail { font-size: 0.82rem; color: var(--text-muted); margin-top: 2px; }
+    .schedule-item.break .schedule-event { color: var(--text-muted); font-weight: 400; font-style: italic; }
+
+    /* ── Dates Timeline ── */
+    .dates-timeline { list-style: none; margin-top: 24px; padding: 0; position: relative; }
+    .dates-timeline::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--border);
+    }
+    .dates-timeline li {
+      position: relative;
+      padding: 8px 0 8px 38px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.93rem;
+    }
+    .dates-timeline li:last-child { border-bottom: none; }
+    .dates-timeline li::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 14px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+    }
+    .dates-timeline li.highlight::before { background: var(--accent); }
+    .dates-timeline .dt-event { flex: 1; color: var(--text); }
+    .dates-timeline .dt-date { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent3); white-space: nowrap; min-width: 130px; text-align: right; }
+
+    /* ── Registration ── */
+    .reg-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+    .reg-tab {
+      padding: 10px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .reg-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .reg-tab:hover:not(.active) { border-color: var(--accent); color: var(--text); }
+    .reg-panel { display: none; }
+    .reg-panel.active { display: block; }
+    .reg-panel iframe { width: 100%; min-height: 620px; border: none; border-radius: var(--radius); background: #fff; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      padding: 40px 28px;
+      text-align: center;
+    }
+    footer p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 6px; }
+    footer a { color: var(--accent2); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav .nav-logo { display: none; }
+      .schedule-item { grid-template-columns: 1fr; gap: 4px; }
+      .schedule-time { font-size: 0.75rem; }
+    }
+    @media (max-width: 480px) {
+      nav ul li a { padding: 12px 8px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════════ OVERVIEW ═══ -->
+<section id="overview">
+  <div class="container">
+    <p class="section-label">Wearables AI Workshop @ ECCV</p>
+    <h2>Wearables AI Grand Challenge - Official Rules</h2>
+    <div class="highlight-card">
+      <p>NO PURCHASE NECESSARY TO ENTER OR WIN PRIZE IN THIS CHALLENGE. A PURCHASE WILL NOT INCREASE YOUR CHANCES OF WINNING. VOID WHERE PROHIBITED BY LAW.</p>
+      <br>
+      <p>BY ENTERING THIS CHALLENGE, EACH ENTRANT AGREES TO THESE OFFICIAL RULES (“TERMS”), WHICH ARE A CONTRACT, SO ENTRANTS SHOULD READ THEM CAREFULLY BEFORE ENTERING. WITHOUT LIMITATION, THIS CONTRACT INCLUDES INDEMNITIES TO THE SPONSOR FROM THE ENTRANTS (i.e., A REQUIREMENT THAT THE ENTRANTS DEFEND AND/OR REIMBURSE SPONSOR FROM/FOR CERTAIN LOSSES) AND A LIMITATION OF ENTRANT’S RIGHTS AND REMEDIES.</p>
+    </div>
+  
+      <div class="card">
+        <p>
+
+External Data (defined below) is permitted in this Challenge provided Entrants have all rights, licenses and permissions to use the External Data as contemplated in the Terms. Top performing Entrants will be required to certify in writing that they have permission to use all External Data used to develop potentially winning Predictions, and may be required to provide documentation demonstrating such permission to Sponsor’s satisfaction. Failure to satisfy these requirements or Sponsor’s belief that the Entrant does not have all necessary consents and licenses (notwithstanding any certification by Entrant) will result in disqualification from the Challenge and forfeiture of any prize claim.
+</br>
+
+</br>
+This Challenge welcomes both open-source and closed-source submissions. To be eligible to win a prize, Entrants must make all source code, model weights, and system configuration used to generate Predictions available under an Approved OSS License (defined below). Closed-source Entrants may participate on the validation leaderboard but will be tagged as 'not eligible for prizes' and cannot enter the test phase or win any prize.
+</br>
+
+</br>
+Winners will be required to execute prize acceptance documents and return them within the specified timeframe in notification or prize may be forfeited (in Sponsor’s sole discretion), as more fully detailed below.  
+</br>
+
+</br>
+OVERVIEW: The Wearable AI GrandChallenge (“Challenge”) is sponsored by Meta Platforms, Inc. (the “Sponsor”) and consists of three separate tracks (“Tracks”), each with two subtracks (“Subtracks”) as described in more detail below.  Eligible participants can participate in Tracks as an Individual or a Team (defined below) to develop machine learning models that address the task set forth for the specific Track  (“Predictions”). Validation sets for all Tracks (each a “Data Set”) and related resources for participation are available at https://wearable-ai-workshop.github.io/ (the “Website”). Entrants will use information from the Data Sets and the Website to develop their Predictions for the applicable Subtrack. Predictions for prize consideration can be submitted through the Website in accordance with the submission dates and times set forth on the Website (“Challenge Period”). By entering this Challenge, each Entrant agrees that Entrant’s biographical information, and other content provided by Entrant and members of their Team, if participating on a Team, as well as Entrant’s Predictions may be publicly announced and posted, including, without limitation, through posting online.   
+</br>
+
+</br>
+ELIGIBILITY: For the purposes of this Challenge, the “Territory” means any area, country, state, territory, or province where United States or local laws do not prohibit participating or receiving a prize in the Challenge and excludes any country or jurisdiction that is the target of U.S., EU, United Nations, or UK comprehensive trade sanctions (e.g., Crimea, Donetsk, and Luhansk regions of Ukraine, Cuba, North Korea, and Iran, as such list may be amended) and Russia, Belarus, Syria and Venezuela.
+</br>
+
+</br>
+This Challenge is open only to entrants who are:
+</br>
+
+</br>
+natural persons who are, as of the date of entry, (i) a resident of a jurisdiction within the Territory; (ii) at least eighteen (18) years old and the age of majority in their jurisdiction of residence (e.g., country, province, state, territory, district, etc.); and (iii) not the target of any trade sanctions administered or enforced by the U.S., EU, United Nations, or UK and are not acting on behalf of entities that are the target of such trade sanctions (any and each, an “Individual”); or
+</br>
+
+</br>
+an association of Individuals that does not constitute a legally recognized entity (any and each, a “Team”). 
+</br>
+
+</br>
+Where distinction is not necessary, any Individual or Team (including each Team member) that enters or takes steps to participate in this Challenge is referred to in these Terms as an “Entrant.” 
+</br>
+
+</br>
+Individuals who are members of the challenge's organizing committee are not eligible to compete in this Challenge. Personnel, officers, directors, members, managers, agents, and representatives of Sponsor involved in developing or closely associated with the Data Sets; any other entities participating in the design, promotion, marketing, administration, or fulfillment of this Challenge; or any of their respective corporate partners, parent companies, divisions, subsidiaries, affiliates, successors in interest, and advertising, promotion, and public relations agencies (collectively along with the members of the challenge's organizing committee, the “Released Parties”), and any family member or member of the same household (whether or not related) of any of the foregoing are not eligible to win prizes in this Challenge. For purposes of this Challenge, the term “family member” is defined as any spouse, partner, parent, legal guardian, child, sibling, grandparent, grandchild, or in-law. 
+</br>
+
+</br>
+Entrants (including each member of a Team) must not be under any legal or contractual obligation that would prohibit their participation in this Challenge as described in these Terms. If participating in this Challenge would result in a violation by Entrant of any law applicable to them/it or any agreement to which they or it are a party, including any agreement with an employer or educational institution, such Entrant is ineligible. If Entrant is associated with or an employee of a company/business/organization/educational institution (any, a “company”), Entrant represents and warrants that their participation in this Challenge and their grant of all rights set forth in these Terms do not violate their company’s policies and procedures.
+</br>
+
+</br>
+Participation in this Challenge constitutes Entrant’s full and unconditional agreement to and acceptance of these Terms and the decisions of Sponsor, which are final and binding in all matters. Any natural person completing any portion of the entry process described in these Terms on behalf of a Team Entrant must be authorized to act on behalf of that Team.  If a Team is entering the Challenge, they must appoint and authorize one individual (the “Representative”) to represent, act, and enter, on their behalf. The Representative must meet the eligibility requirements above and will be considered the Individual who completes and submits the Team’s Entry through the Website. By entering on behalf of a Team you represent and warrant that you are the Representative authorized to act on behalf of your Team.
+</br>
+
+</br>
+To be eligible to win a prize in this Challenge, winning Entrants (defined below) agree to publish their winning Prediction, source code, model weights, and system configuration to a publicly accessible repository under a permissive open source license without commercial restrictions approved by the Open Source Initiative “Approved OSS License.”
+</br>
+
+</br>
+HOW TO ENTER:  To enter the Challenge, eligible Entrants must complete ALL of the following steps before the end of the Challenge Period:  
+</br>
+Register at https://wearable-ai-workshop.github.io/.
+</br>
+Visit the Website to review participation instructions for the Track and Subtrack you wish to participate in and follow provided links to access a Track’s applicable Data Set(s).
+</br>
+Use the Data Set to train a model to generate Predictions for the Subtrack in accordance with the instructions set forth on the Website and these Terms. Use of the Data Set is subject to the CC-BY-NC-4.0 license.
+</br>
+Submit Entries during the Challenge Period by following the submission instructions on the Website. Depending on the Track and evaluation phase, Entries may consist of Prediction files, packaged models, or containerized inference environments, as specified on the Website.
+</br>
+
+</br>
+Entrants must use the applicable Track Data Sets to train their models to generate Predictions to the best of their ability and compile information and data necessary to evaluate the performance of the Prediction in a container. If Participants use any external data, pretrained models or software for the Challenge, it must comply with the External Data requirements in the ENTRY REQUIREMENTS section set forth below. To be eligible for prizes, Predictions must satisfy the evaluation criteria and minimum performance thresholds, if any, set forth on the Website. 
+</br>
+
+</br>
+For the Validation Phase, there is a limit of five (5) Predictions per Subtrack per day. For the Test Phase, there is a limit of three (3) Predictions per Subtrack for the entire Test Phase. The overall Prediction limit per Entrant for each Subtrack will be set forth on the Website. For the purposes of this Challenge, a “day” is defined as from 00:00:00 – 23:59:59 UTC.  Entrants may submit more than one Prediction for each Subtrack, however only Entrant’s best uploaded public Prediction will be considered Entrant’s Entry (defined below) for prize consideration for the applicable Track. Each Individual may participate either in their individual capacity or on one Team for each Subtrack. All Predictions must be made via public entry through the Website to be valid for Challenge consideration. 
+</br>
+
+</br>
+Individuals may register only once for a Track either as an Individual or as part of a Team. If an Individual registers for a Track more than once, the Individual may be, and the remainder of their Team may be, disqualified in Sponsor’s sole discretion. An Individual cannot join more than one (1) Team for a Track and an Individual who is part of a Team for a Track cannot also enter that Track on an individual basis. If you are participating as a Team, you must join (or form, if not yet formed) your desired Team for the Track.
+</br>
+
+</br>
+Submitting Entries to a Track from more than one account per Individual (if competing as an Individual) is a breach of these Terms and Sponsor reserves the right to disqualify any Individual (and that Individual’s Team, if applicable) who is found to breach these Terms.
+</br>
+
+</br>
+To be eligible to win a prize, Predictions must be uploaded in accordance with all instructions specified on the Website, including the specified format.
+</br>
+
+</br>
+The Predictions and related content and information submitted in accordance with these Terms and instructions of Sponsor, and all materials actually received by Sponsor, are referred to in these terms as an “Entry”.  An Entrant’s Prediction and any other content or materials that an Entrant submits to Sponsor as part of this Challenge is referred to collectively as the Entrant’s “Entrant Content”. All Entrant Content submitted in this Challenge must comply fully with the “Entry Requirements” section below. 
+</br>
+
+</br>
+Entries must be submitted and received by the Sponsor during the Challenge Period in strict accordance with these Terms.  The Website clock will be the official timekeeper for this Challenge. For purposes of this Challenge, only complete Entries that are actually received by Sponsor through the Website and during the applicable Challenge Period will be considered. Other proof of submitting or attempting to submit an Entry (such as, without limitation, a printed, saved or copied automated receipt confirming entry, a “Thanks for submitting” screen or message) does not constitute proof of actual receipt of the Entry for purposes of this Challenge. Those who do not abide by these Terms and the instructions of Sponsor and its representatives and provide all required Entrant Content may, in Sponsor’s discretion, be disqualified. Entries (or participation that does not qualify as an “Entry”) that are incomplete, lost, late, misdirected, mutilated, fraudulent, illegitimate, incomprehensible, garbled, or generated by a macro, bot, or other automated means will not be accepted and will be void.  Entries or participation made on behalf of an Entrant by a third party not affiliated or associated with that Entrant (as determined by Sponsor in its sole discretion) or originating through any commercial promotion subscription, notification, or entering services will be declared invalid and disqualified for this Challenge. No Released Party will have any responsibility or liability for any dispute regarding any Entrant, including the identity of any Individual Entrant, the composition or members of a Team Entrant, or the distribution of any prize won among members of a Team Entrant. In the event that any dispute regarding an Entry or Entrant (including those regarding the identity or members of an Entrant Team or any Entrant’s rights in a Prediction) cannot be resolved to Sponsor’s satisfaction, the Entry will be deemed ineligible and the Entrant disqualified. ENTRIES AND PARTICIPATION MAY NOT BE ACKNOWLEDGED, WILL NOT BE RETURNED AND, IN FACT, MAY BE DESTROYED. KEEP A COPY OR THE ORIGINAL OF EACH ELEMENT OF THE ENTRY. ANY ENTRY THAT DOES NOT CONFORM TO THE REQUIREMENTS IN THESE TERMS MAY, IN SPONSOR’S DISCRETION, BE DEEMED INELIGIBLE.
+</br>
+
+</br>
+ENTRY REQUIREMENTS:  In addition to the instructions listed above, Entrant Content must meet all of the following requirements, as determined by Sponsor in its sole discretion, or the associated Entry may be disqualified:
+</br>
+
+</br>
+Platform Terms: Each Entrant must also at all times comply with all terms and policies applicable to the Website and any third party platform or software that Entrant may use in connection with Entrant’s participation (e.g. GitHub, AWS, HuggingFace, etc.). 
+</br>
+
+</br>
+Public Posting/Sharing: Entrants are encouraged to make their Prediction, source code, model weights, and system configuration to a publicly accessible repository under an Approved OSS License; doing so is not a condition for Entry, however it is a condition to win a prize. In addition to Sponsor and third party use of the Entrant Content detailed elsewhere in these Terms, Predictions may be posted to the Website and Entrants’ standing may be identified in a leaderboard. Leaderboard standings are not dispositive. Sponsor’s decisions and the evaluation and judging process set forth herein are dispositive. 
+</br>
+
+</br>
+Intellectual Property: Other than those materials provided by Sponsor, all aspects of the Entrant Content must be solely owned by, or licensed to, the Entrant or in the public domain. All third-party content not owned by or licensed to the Entrant is prohibited, unless such content is in the public domain. Sponsor may request written proof of ownership of or adequate license to Entrant of any Entrant Content. Failure to timely provide adequate proof of ownership or sufficient license rights in any content included in the Entrant Content (as determined by Sponsor in its sole discretion) may result in the Entrant being disqualified and related Entry deemed void. 
+</br>
+
+</br>
+External Training Materials: If Entrants use any data, pretrained models or software (collectively, “External Data”) in addition to the Data Sets to develop Predictions or otherwise participate in the Challenge, Entrants must have all rights, licenses and permissions to use such External Data as contemplated in these Terms. Entrant represents and warrants that any use of any external training materials in connection with participation in this Challenge is pursuant to and in accordance with a permissive open source license or other valid license that permits use of the External Data in a prize competition without the need for additional approvals from any third party, and such External Data must be publicly accessible 
+</br>
+
+</br>
+Entrants agree to provide Sponsor or Sponsor’s representative with proof (to Sponsor’s satisfaction) of adequate licenses upon request at any time during or after the Challenge and Challenge evaluation process. Potential winners may also be required to certify in writing that they have permission to use all external training materials used to develop potentially winning Entries. Failure to satisfy any of these requirements in accordance with Sponsor’s instructions and timing, or Sponsor or its representative’s belief that an Entrant does not have all necessary consents and licenses (notwithstanding any certification by Entrant) will result in disqualification from the Challenge and forfeiture of any prize claim.
+</br>
+
+</br>
+Language: All Entrant Content must be in English or, if not in English, the Entrant must provide an accurate English translation and promptly respond to questions or requests for clarification from Sponsor within the timeframe requested, if any.  If any part of an Entrant’s Entrant Content depicts, identifies, or includes any person that is not Entrant themselves or, for a Team Entrant, a member of the Team, Entrant must have permission from the individual depicted, identified, or included (and, if such individual is a minor, their parent or legal guardian) and Entrant agrees to provide Sponsor with written confirmation of those permissions and rights upon request. 
+</br>
+
+</br>
+No Biometric Processing: In addition to each Entrant’s obligation to comply with any licenses applicable to External Data an Entrant may use to participate in the Challenge, Entrants are prohibited from performing any biometric processing on data in connection with the Challenge (including the creation of models that perform biometric processing), including, without limitation, the creation of a retina or iris scan, fingerprint, voiceprint, scan of hand or facial geometry, or any other biometric identifier as defined under applicable law.
+</br>
+
+</br>
+Other Requirements/Restrictions: Entrant Content must not create or imply any association between Sponsor and any individual or entity or their products or services, including the Entrant. Entrant Content must not infringe, misappropriate, or violate any rights of any third party including, without limitation, copyright (including moral rights), trademark, patent, trade secret, or rights of privacy or publicity or contain any confidential information. Entrant Content must not include information or content that is false, fraudulent, deceptive, misleading, defamatory, libelous (including trade libel), disparaging, harassing, threatening, profane, obscene, pornographic or otherwise adult-oriented, hateful, indecent, inappropriate, or injurious to any Released Party or any other party.  Entrant Content must not contain or describe any harmful or illegal activity or content or in any way violate any federal, state, or local laws, rules, or regulations and Entrant is responsible for compliance with all applicable laws in connection with their Challenge participation, including compliance with any trade laws or regulations applicable to their Entry under this Challenge. Entrant Content must be suitable for presentation in a public forum. Entrant agrees that their participation in the Challenge and agreement to these Terms and any Released Party’s reproduction, display, and use of the Entrant Content in accordance with these Terms will not violate any agreement to which Entrant is a signatory or party.  Entrant agrees to indemnify the Released Parties against any and all claims from any third party for any use or reuse by any Released Party of the Entrant Content authorized under these Terms.  Sponsor reserves the right in its sole discretion to disqualify from the Challenge any Entrant whose Entry (in its sole discretion) refers, depicts, or in any way reflects negatively upon a Released Party, the Challenge, or any other person or entity or does not comply with these Terms, including any of the above Entry requirements. Violation of these Terms may, in Sponsor’s sole discretion, result in disqualification. If a Prediction was developed using code containing or depending on software licensed under an open source license, that license must be an Approved OSS license.  
+</br>
+
+</br>
+
+</br>
+WINNER SELECTION/NOTIFICATION: The Predictions for each Subtrack will be evaluated based upon the evaluation metrics set forth on the Website. The top Entry receiving the highest scores for each Subtrack based upon the stated metric(s) will be potential grand prize winners and the second highest scoring Entry for each Subtrack will be the potential runner-up prize winners, subject to verification and compliance with any and all of Sponsor’s requirements, including completion of Winner Documents (defined below) and an academic explanation of potential winner’s Prediction, including citation to the Sponsor’s Wearable AI Workshop at the European Conference on Computer Vision (ECCV) 2026. A tie between two or more valid and identically scored Predictions submitted during the Challenge Period will be resolved in favor of the tied Prediction that was submitted first. In the event an Entrant submits Predictions from a method that is substantially similar to a method previously used by the Entrant in the Challenge, the performance of such subsequent Predictions must be a non-trivial improvement over the previous Prediction as determined in Sponsor's sole discretion to be eligible for winner selection. 
+</br>
+
+</br>
+The source code must contain a description of resources required to build and run the algorithm. Potential winners may be required to assist in running potential winners’ Prediction code to the satisfaction of Sponsor.
+</br>
+
+</br>
+An Entrant may decline to be nominated as a winner by notifying Sponsor directly within one week following the end of the Challenge Period, in which case the declining Entrant forgoes any prize or other features associated with winning the Challenge. Sponsor reserves the right to disqualify an Entrant who so declines at Sponsor’s sole discretion if Sponsor deems disqualification appropriate.
+</br>
+
+</br>
+Winners will be determined as specifically described, and not using any random drawing or method incorporating chance.  Sponsor will attempt to notify the potential winners via the email address associated with the account that submitted the potentially winning Prediction within fourteen (14) calendar days following the conclusion of the applicable Challenge Period and potential winners will need to contact Sponsor in accordance with Sponsor’s instructions and by the stated deadlines to complete the winner verification process. Sponsor may also publicly post the results, including individual and team names (as determined by Sponsor in its sole discretion).  Each potential individual winner, including all natural people who are members of a winning Team (as determined and requested in Sponsor’s sole discretion) may be required to complete, execute, have notarized (if applicable), and return an affidavit or declaration confirming eligibility, a liability/publicity release (unless prohibited by law), tax documents and related prize-acceptance documents (collectively, “Winner Documents”) within the time frame specified and in the form provided by Sponsor’s representative, without revision, or prize may be forfeited. 
+</br>
+
+</br>
+If any individual Entrant, individual member of a Team, or Representative refuses to comply with the foregoing requirements and other requirements of Sponsor, their Entry may be disqualified at any time and/or prize may be forfeited in Sponsor’s sole discretion with no liability or responsibility to the respective Entrant or any individual within that Team, even if other Team members have complied with the requirements. The winners must respond to Sponsor’s winner notification within seven (7) calendar days of attempted notification or other time period set forth in the notification or prize may be forfeited. Any Winner Documents required of the winner must be received by Sponsor from the potential winner by the deadline specified by Sponsor in the Winner Document correspondence or prize may be forfeited and an alternate winner selected. If any notification or other Challenge-related communication is returned as undeliverable, or if a selected potential winner cannot be reached or does not respond as instructed after Sponsor has attempted to notify that potential winner, that selected Winner may be disqualified and an alternate winner may be determined (time permitting and in Sponsor’s sole discretion). Sponsor reserves the right to modify the notification procedures in connection with the selection of any alternate potential winner, if any. The prize claim and Winner Documents are subject to verification by Sponsor. All prizes legitimately claimed will be awarded. Sponsor will not be obligated to pursue more than three (3) alternates (time permitting) for the prize for any reason.
+</br>
+
+</br>
+To the fullest extent allowable under applicable law, all taxes, if any (including, without limitation, national, federal, state, provincial, territorial, prefectural, and/or local taxes), as well as any expenses arising from acceptance or use of the prize and not specified in these Terms as being provided as part of the prize, are the sole responsibility of the winner. Winners may be required to provide certain information to facilitate receipt of the prize, including, but not limited to, completing and submitting any tax or other forms necessary for compliance with applicable withholding and reporting requirements. 
+</br>
+
+</br>
+Sponsor, Sponsor representatives and judges' decisions are final and binding in all matters. 
+</br>
+
+</br>
+PRIZES AND QUANTITY:  The grand prize winner in each Subtrack will receive $2,500 USD. The runner-up winner in each Subtrack will receive $1,000 USD. Total value of all prizes to be awarded in the Challenge is $21,000 USD.
+</br>
+
+</br>
+After verification of eligibility, each winner will receive the prize in the form of a check or electronic transfer from Sponsor or its representative made out to the winner (if an Individual, or to the individual Team members if a Team), as determined in Sponsor representative’s sole discretion. Allow 30 days from final verification and confirmation for prize delivery. 
+</br>
+
+</br>
+If a Team wins a prize, all Team members must submit a single written statement describing how the prize is to be allocated among the Team members. If the Team fails to submit such a statement within 30 days after the end of the Challenge Period, then Sponsor’s representative will distribute the prize among Team members in equal shares and will have no further obligation to winning Team members. Winners may receive an IRS 1099 form or W-8BEN, as applicable, from Sponsor’s representative in the amount of their prize at the appropriate time. Prize winners are responsible for any taxes, fees or other liability resulting from their receipt of a Prize. 
+</br>
+
+</br>
+Prizes shall be used only in accordance with applicable laws and shall not be used in any way, directly or indirectly, to facilitate any act that would constitute bribery or an illegal kickback, an illegal campaign contribution, or would otherwise violate any applicable anti-corruption or political activities law.
+</br>
+  
+  </br>
+  Sponsor is not responsible for a potential winner’s inability to accept or use any prize. The Released Parties are not liable for any missed events, opportunities or expenses incurred as a consequence of internet connectivity, hardware or software issues. 
+  </br>
+  
+</br>
+Prize details not specifically stated in these Terms, will be determined in Sponsor’s sole discretion. If a winner does not accept or use the entire prize for any reason, the unaccepted or unused part of the prize will be forfeited and Sponsor will have no further obligation with respect to that prize or portion of the prize. Prizes may not be transferred (a) to any individual, entity, or country prohibited by any applicable U.S. or non-U.S. export controls and trade sanctions; (b) to anyone on U.S. or non-U.S. government restricted parties lists; or (c) for any purpose prohibited by applicable export controls and trade sanctions, including nuclear, chemical or biological weapons, or missile technology applications without the required government authorizations. You acknowledge that Sponsor is subject to U.S. economic restrictions and trade sanctions. As such, Sponsor reserves the right to deny distribution of any prize when required by or otherwise made infeasible by applicable law.  Sponsor reserves the right to substitute any stated prize or any component thereof with another prize or component of equal or greater value for any reason. Sponsor has no obligation to award more than the stated prizes. Entrants waive the right to assert as a cost of winning the prize, any and all costs of verification and redemption and any liability and publicity that might arise from claiming or seeking to claim said prize.
+</br>
+
+</br>
+LICENSE: By entering, except where prohibited by law, each Entrant grants to the Released Parties (and their agents, successors, and assigns) the irrevocable, perpetual, transferable, sublicensable, absolute right and permission to use, edit, modify, copy, reproduce, and distribute their Entrant Content in connection with the Challenge. In addition each Entrant that enters in association with a company/business further, on behalf of the company/business grants to the Released Parties (and their agents, successors, and assigns) a non-exclusive, irrevocable, worldwide, transferable and sublicensable right and license to use such company/business's trade names and trademarks (including logos) in connection with this Challenge. Nothing contained in these Terms obligates Sponsor to make use of any of the rights granted herein and each natural person granting publicity rights under this provision waives any right to inspect or approve any such use.
+</br>
+
+</br>
+Each Entrant hereby acknowledges and agrees that the relationship between the Entrant and each of the Released Parties is not a confidential, fiduciary, or other special relationship, and that the Entrant’s decision to submit their Entry for purposes of the Challenge does not place any of the Released Parties in a position that is any different from the position held by members of the general public with regard to elements of the Entry (including, without limitation, the Predictions and any written explanations provided by Entrant), other than as set forth in these Terms. Each Entrant understands and acknowledges that the Released Parties have wide access to ideas, text, images, code, applications, software, and other creative materials. Each Entrant also acknowledges that many Predictions, written descriptions or other materials submitted in connection with the Sponsor’s workshop at the European Conference on Computer Vision (ECCV) 2026 or this Challenge may be similar to, or identical to their Predictions or any written descriptions and/or each other in idea, function, components, format, or other respects. Each Entrant acknowledges and agrees that such Entrant will not be entitled to any compensation or right to negotiate as a result of any Released Party’s use of any such similar or identical material that has or may come to such Released Party from other sources. Each Entrant acknowledges and agrees that Sponsor does not now and will not have in the future any duty or liability (direct or indirect; vicarious, contributory, or otherwise) with respect to the infringement or protection of the Entrant’s patent, copyright or other proprietary rights in and to their Entry, including the Predictions contained or described therein. Each Entrant waives and releases the Released Parties from any and all claims that Entrant may now or hereafter have in any jurisdiction based on “moral rights” or “droit moral” or unfair competition with respect to the Released Parties’ exploitation of any Entrant Content consistent with the terms of the license set forth in herein without further notification or compensation to Entrant of any kind, and agrees not to instigate, support, maintain, or authorize any action, claim, or lawsuit against the Released Parties, each of their licensees, or any other person in connection with this Challenge, on the grounds that any use of any Entrant Content or element thereof or derivative works therefrom in accordance with this license infringes or violates any of Entrant’s rights therein. In no way limiting the foregoing, each Entrant acknowledges that, with respect to any claim by Entrant relating to or arising out of a Released Party’s actual or alleged exploitation or use of any Entry or other material submitted in connection with the Challenge, the damage, if any, thereby caused to the applicable Entrant will not be irreparable or otherwise sufficient to entitle such Entrant to seek injunctive or other equitable relief or in any way enjoin the distribution, exhibition, or other exploitation of any Released Party process, application, service or other property, and Entrant’s rights and remedies in any such event are strictly limited to the right to recover damages, if any, in an action at law.
+</br>
+
+</br>
+LIMITATION OF LIABILITY & DISCLAIMER OF WARRANTIES: NOTHING IN THESE TERMS LIMITS, EXCLUDES, OR MODIFIES OR PURPORTS TO LIMIT, EXCLUDE, OR MODIFY ANY STATUTORY CONSUMER GUARANTEE OR ANY IMPLIED CONDITION OR WARRANTY, THE EXCLUSION OF WHICH FROM THESE TERMS WOULD CONTRAVENE ANY STATUTE OR CAUSE ANY PART OF THESE TERMS TO BE VOID (“NON-EXCLUDABLE GUARANTEES”). SUBJECT TO THE LIMITATIONS IN THE PRECEDING SENTENCE AND TO THE MAXIMUM EXTENT PERMITTED BY ANY MANDATORY PROVISIONS OF APPLICABLE LAW, THE RELEASED PARTIES EXCLUDE FROM THESE TERMS ALL CONDITIONS, WARRANTIES, AND TERMS IMPLIED BY STATUTE, GENERAL LAW, OR CUSTOM, EXCEPT FOR LIABILITY IN RELATION TO A NON-EXCLUDABLE GUARANTEE. SUBJECT TO ANY NON-EXCLUDABLE GUARANTEES, EACH ENTRANT AGREES TO RELEASE, HOLD HARMLESS, AND INDEMNIFY (I.E., DEFEND AND/OR REIMBURSE) THE RELEASED PARTIES FROM ANY LIABILITY WHATSOEVER FOR INJURIES OR DAMAGES OF ANY KIND SUSTAINED IN CONNECTION WITH THE USE, ACCEPTANCE, POSSESSION, MISUSE, OR AWARDING OF A PRIZE OR WHILE PREPARING FOR, PARTICIPATING IN, AND/OR TRAVELING TO OR FROM ANY CHALLENGE- OR PRIZE-RELATED ACTIVITY, INCLUDING, WITHOUT LIMITATION, ANY INJURY, DAMAGE, DEATH, LOSS, OR ACCIDENT TO PERSON OR PROPERTY (HOWEVER (BUT ONLY IF REQUIRED BY LAW IN YOUR JURISDICTION), THIS RELEASE, HOLD HARMLESS, AND INDEMNIFICATION COMMITMENT DOES NOT APPLY TO CASES OF BODILY INJURY OR LOSS OF LIFE OR TO THE EXTENT THAT ANY DEATH OR PERSONAL INJURY IS CAUSED BY THE NEGLIGENCE OF SPONSOR OR OTHER THIRD PARTY, WHERE LIABILITY TO THE INJURED PARTY CANNOT BE EXCLUDED BY LAW). FURTHER, ENTRANT AGREES THAT THE RELEASED PARTIES ARE NOT RESPONSIBLE IN ANY WAY FOR ANY ADDITIONAL EXPENSES, OMISSIONS, DELAYS, OR RE-ROUTING RESULTING FROM ANY ACTS OF ANY GOVERNMENT OR AUTHORITY. EACH WINNER AGREES THAT THE PRIZE IS PROVIDED AS-IS WITHOUT ANY WARRANTY, REPRESENTATION, OR GUARANTEE (EXPRESS OR IMPLIED, IN FACT OR IN LAW), WHETHER NOW KNOWN OR HEREINAFTER ENACTED, RELATIVE TO THE USE OR ENJOYMENT OF THE PRIZE, BEYOND ANY NON-EXCLUDABLE GUARANTEES.
+</br>
+
+</br>
+EACH ENTRANT UNDERSTANDS AND AGREES THAT ALL RIGHTS UNDER SECTION 1542 OF THE CIVIL CODE OF CALIFORNIA AND ANY SIMILAR LAW OF ANY JURISDICTION ARE HEREBY EXPRESSLY WAIVED BY HIM/HER. SECTION 1542 READS AS FOLLOWS:
+</br>
+
+</br>
+“CERTAIN CLAIMS NOT AFFECTED BY A GENERAL RELEASE. A GENERAL RELEASE DOES NOT EXTEND TO CLAIMS THAT THE CREDITOR OR RELEASING PARTY DOES NOT KNOW OR SUSPECT TO EXIST IN HIS OR HER FAVOR AT THE TIME OF EXECUTING THE RELEASE AND THAT, IF KNOWN BY HIM OR HER, WOULD HAVE MATERIALLY AFFECTED HIS OR HER SETTLEMENT WITH THE DEBTOR OR RELEASED PARTY.”
+</br>
+
+</br>
+
+</br>
+ADDITIONAL DISCLAIMERS:  The Released Parties are not responsible and/or liable for any of the following, whether caused by a Released Party, the Entrant (or a member of any Entrant Team), or by human error (except to the extent that any of the following occur for reasons within Sponsor’s reasonable control, if applicable law in your jurisdiction of residence dictates that liability to the injured party in such a case cannot be excluded by law): Entries made by illegitimate means (such as, without limitation, by an automated computer program); any lost, late, postage-due, incomplete, illegible, incomprehensible, mutilated, or misdirected vote, email, mail, or Challenge-related correspondence or materials; any error, omission, interruption, defect, or delay in transmission or communication; viruses or technical or mechanical malfunctions; interrupted or unavailable telephonic, cellular, cable, or satellite systems; errors, typos or misprints in these Terms, in any Challenge-related advertisements, or other materials; failures of electronic equipment, computer hardware, or software; lost or unavailable network connections or any failed, incorrect, incomplete, inaccurate, garbled or delayed electronic communications; technical or human error which may occur in the administration of the Challenge or the processing of submitted Predictions or other entry materials; or any injury or damage to persons or property which may be caused, directly or indirectly, in whole or in part, from Entrant’s participation in the Challenge or receipt or use of any prize. Released Parties are not responsible for electronic communications that are undeliverable as a result of any form of active or passive filtering of any kind, or for insufficient space in a person’s email account or voicemail inbox to receive email or voice messages. Released Parties are not responsible, and may disqualify an Entrant, if any contact information provided by the Entrant does not work or is changed without giving prior written notice to Sponsor. Without limiting any other provision in these Terms, the Released Parties are not responsible or liable to any Entrant or Winner (or any person claiming through such Entrant or Winner) for failure to supply a prize or any part thereof in the event that any of the Challenge activities or Released Parties’ operations or activities are affected by any cause or event beyond the sole and reasonable control of the applicable Released Party (as determined by Sponsor in its sole discretion), including, without limitation, by reason of any acts of God, equipment failure, threatened or actual terrorist acts, air raid, act of public enemy, war (declared or undeclared), civil disturbance, insurrection, riot, epidemic or pandemic, fire, explosion, earthquake, flood, hurricane, unusually severe weather, blackout, embargo, labor dispute or strike (whether legal or illegal), labor or material shortage, transportation interruption of any kind, work slowdown, any law, rule, regulation, action, order, or request adopted, taken, or made by any governmental or quasi-governmental entity (whether or not such governmental act proves to be invalid), or any other cause, whether or not specifically mentioned above. 
+</br>
+
+</br>
+GENERAL RULES:  By entering this Challenge (except where prohibited by law), each natural person agreeing to these Terms as part of an Entry (as an Entrant or on behalf of an Entrant Team) grants the Released Parties the irrevocable, sublicensable, free-of-charge, absolute right and permission to use, publish, post or display his or her name, photograph, likeness, voice, biographical information, any quotes attributable to him or her, and any other indicia of persona (regardless of whether altered, changed, modified, edited, used alone, or used with other material in the Released Parties’ sole discretion) for advertising, trade, promotional and publicity purposes without further obligation or compensation of any kind to him or her, anywhere worldwide, in any medium now known or hereafter discovered or devised (including, without limitation, on the internet) without any limitation of time and without notice, review or approval, and each such person releases all Released Parties from any and all liability related to such authorized uses. Nothing contained in these Terms obligates Sponsor to make use of any of the rights granted herein and each natural person granting publicity rights under this provision waives any right to inspect or approve any such use. 
+</br>
+
+</br>
+Information collected by Sponsor in this Challenge will be used in accordance with Sponsor’s Data Policy at https://www.facebook.com/privacy/explanation. Entrants may use third party platforms to participate in the Challenge. Any information Entrants share with those platforms is subject to the platform’s respective privacy policy. Sponsor is not responsible for the privacy practices of others.
+</br>
+
+</br>
+Sponsor’s decisions will be final in all matters relating to this Challenge, including interpretation of these Terms, determination of the winners, and awarding of the prizes. All Entrants, as a condition of entry, agree to be bound by these Terms and the decisions of Sponsor. Failure to comply with these Terms may result in disqualification from the Challenge. Entrants further agree to not damage or cause interruption of the Challenge and/or prevent others from participating in the Challenge. Sponsor reserves the right to restrict or void participation from any account, IP address, email address or domain, or device if any suspicious Entry and/or participation is detected. Sponsor reserves the right, in its sole discretion, to void Entries or other participation by any person or entity who Sponsor believes has attempted to tamper with or impair the administration, security, fairness or proper play of this Challenge. ​​If required by law, Sponsor reserves the right, in its sole discretion, to void Entries or other participation at any stage of the Challenge including after determination and announcement of winners. In the event there is an alleged or actual ambiguity, discrepancy or inconsistency between disclosures or other statements contained in any Challenge-related materials and these Terms (including any alleged discrepancy or inconsistency within these Terms), it will be resolved by Sponsor in its sole discretion. Entrants waive any right to claim ambiguity in the Challenge or these Terms. If Sponsor determines (at any time and in its sole discretion) that any winner or potential winner is disqualified, ineligible, in violation of these Terms, or engaging in behavior that Sponsor deems obnoxious, inappropriate, threatening, illegal or that is intended to annoy, abuse, or harass any other person or entity, Sponsor reserves the right to disqualify such winner or potential winner, even if the disqualified winner or potential winner may have been notified or displayed or announced anywhere. Sponsor’s failure to or decision not to enforce any provision in these Terms will not constitute a waiver of that or any other provision. The invalidity or unenforceability of any provision of these Terms will not affect the validity or enforceability of any other provision. In the event that any provision is determined to be invalid or otherwise unenforceable or illegal, these Terms will otherwise remain in effect and will be construed in accordance with their terms as if the invalid or illegal provision were not contained herein. If the Challenge is not capable of running as planned for any reason, Sponsor reserves the right, in its sole discretion, to cancel, modify or suspend the Challenge and award the prize based on eligible Entries received prior to cancellation, modification, or suspension, if any, or as otherwise deemed fair and appropriate by Sponsor. If any person supplies false information, participates or submits Entries by fraudulent means, or is otherwise determined to be in violation of these Terms in an attempt to obtain a prize, Sponsor may disqualify that person (and any Entrant on the behalf of which such person participated in the Challenge) and seek damages from him or her and that person may be prosecuted to the full extent of the law. If any dispute regarding an Entry cannot be resolved to Sponsor’s satisfaction, such Entry will be deemed ineligible. CAUTION: ANY ATTEMPT TO DAMAGE ANY ONLINE SERVICE OR WEBSITE OR UNDERMINE THE LEGITIMATE OPERATION OF THE CHALLENGE VIOLATES CRIMINAL AND CIVIL LAWS. IF SUCH AN ATTEMPT IS MADE, SPONSOR MAY DISQUALIFY ANY ENTRANT MAKING SUCH ATTEMPT AND MAY SEEK DAMAGES TO THE FULLEST EXTENT PERMITTED BY LAW.
+</br>
+
+</br>
+DISPUTES/GOVERNING LAW:  Except where prohibited by law, any and all disputes, claims, and causes of action between an Entrant and any Released Party arising out of or connected with this Challenge, the determination of any Winner, or any prize awarded must be resolved individually, without resort to any form of class action. Further, in any such dispute, under no circumstances will an Entrant be permitted or entitled to obtain awards for, and hereby waives all rights to claim punitive, incidental or consequential damages, or any other damages, including attorneys’ fees, other than the Entrant’s actual out-of-pocket expenses (if any), not to exceed ten dollars ($10 USD), and each Entrant further waives all rights to have damages multiplied or increased. 
+</br>
+
+</br>
+This Challenge and any dispute arising under or related thereto (whether for breach of contract, tortious conduct, or otherwise) will be governed by the internal laws of the State of California, USA, without giving effect to its conflicts of law or choice of law principles or rules that would cause the application of the laws of any jurisdiction. Any legal actions, suits or proceedings related to this Challenge (whether for breach of contract, tortious conduct, or otherwise) will be brought exclusively in the state or federal courts located in or having jurisdiction over San Mateo County, California, US, and each Entrant accepts and submits to the personal jurisdiction of those courts with respect to any legal actions, suits or proceedings arising out of or related to this Challenge.
+</br>
+
+</br>
+RULES/WHO WON?: A copy of these Terms is available visiting https://wearable-ai-workshop.github.io/ until the end of the Challenge Period. Information about who won is available by sending an email with the subject line “Wearable AI Grand Challenge - Who Won?” to tranx@meta.com. Requests for winner information must be received no later than three (3) months after the end of the Challenge Period and must identify which Track the requested winner information is for.
+</br>
+
+</br>
+SPONSORS: Meta Platforms, Inc., One Hacker Way, Menlo Park CA 94025 USA.
+          
+        </p>
+      </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <p>Wearable AI Workshop @ ECCV 2026</p>
+    <p>Organized by Meta Reality Labs &bull; University of Edinburgh &bull; HKUST &bull; Georgia Tech &bull; UCF</p>
+    <p style="margin-top:10px;">Contact: <span class="obf-email" data-u="shanemoon" data-d="meta.com" style="cursor:pointer; color:var(--text-muted);">shanemoon [at] meta [dot] com</span></p>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.obf-email').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var addr = el.dataset.u + '@' + el.dataset.d;
+      el.innerHTML = '<a href="mailto:' + addr + '" style="color:var(--accent2)">' + addr + '</a>';
+    });
+    el.title = 'Click to reveal email';
+  });
+
+  function switchTab(tab) {
+    document.querySelectorAll('.reg-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.reg-panel').forEach(p => p.classList.remove('active'));
+    if (tab === 'individual') {
+      document.querySelectorAll('.reg-tab')[0].classList.add('active');
+      document.getElementById('tab-individual').classList.add('active');
+    } else {
+      document.querySelectorAll('.reg-tab')[1].classList.add('active');
+      document.getElementById('tab-team').classList.add('active');
+    }
+  }
+
+  // Transparent nav that gains background on scroll
+  var nav = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+
+  // ── Active nav highlight (click + scroll spy) ──
+  var navLinks = Array.from(document.querySelectorAll('nav ul li a[href^="#"]'));
+  var sectionIds = navLinks.map(function(a) { return a.getAttribute('href').slice(1); });
+  var sections = sectionIds.map(function(id) { return document.getElementById(id); });
+
+  function setActive(id) {
+    navLinks.forEach(function(a) {
+      a.classList.toggle('nav-active', a.getAttribute('href') === '#' + id);
+    });
+  }
+
+  // Click: set active immediately
+  navLinks.forEach(function(a) {
+    a.addEventListener('click', function() {
+      setActive(a.getAttribute('href').slice(1));
+    });
+  });
+
+  // Scroll spy using IntersectionObserver
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) { setActive(entry.target.id); }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+  sections.forEach(function(s) { if (s) observer.observe(s); });
+</script>
+</body>
+</html>
