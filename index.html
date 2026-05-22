@@ -290,7 +290,9 @@
       overflow: hidden;
       transition: border-color 0.2s, transform 0.2s;
     }
-    .challenge-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .challenge-card:hover, .challenge-card.pair-hover { border-color: var(--accent); transform: translateY(-2px); }
+    .gif-preview-card { transition: border-color 0.2s, transform 0.2s; }
+    .gif-preview-card:hover, .gif-preview-card.pair-hover { border-color: var(--accent) !important; transform: translateY(-2px); }
     .challenge-card::before {
       content: '';
       position: absolute;
@@ -333,6 +335,8 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
+    .gif-grid + div { margin-top: 10px; }
+    .gif-grid + div h4 { margin-top: 0; }
     .gif-grid img {
       width: 100%;
       aspect-ratio: 9/16;
@@ -365,6 +369,7 @@
     .data-table tr:last-child td { border-bottom: none; }
     .data-table tr.ours td { color: var(--text); font-weight: 600; }
     .data-table tr.ours td:first-child { color: var(--accent2); }
+    .data-table th:not(:first-child), .data-table td:not(:first-child) { text-align: center; }
     .data-table .check { color: var(--accent2); }
     .data-table .cross { color: #444; }
 
@@ -509,7 +514,8 @@
       <li><a href="#organizers">Organizers</a></li>
       <li><a href="#program">Program</a></li>
       <li><a href="#dates">Dates</a></li>
-      <li><a href="#register">Register</a></li>
+      <li><a href="#participate">Register</a></li>
+      <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
 </nav>
@@ -559,7 +565,7 @@
 <section id="topics">
   <div class="container">
     <p class="section-label">Research Areas</p>
-    <h2>Call for Paper</h2>
+    <h2>Call for Papers</h2>
     <p>The workshop welcomes submissions on the following topics, among others:</p>
     <div class="topic-item">
       <div class="topic-dot"></div>
@@ -586,7 +592,7 @@
       <div><strong>Auxiliary Sensor Signals from Wearables</strong> Learning contextualized signals from diverse wearable devices (e.g., EMG, IMU motion sensors), augmented to the primary vision signals for various assistant use cases.</div>
     </div>
 
-    <div class="card" id="register" style="margin-top:32px;">
+    <div class="card" id="submit" style="margin-top:32px;">
       <h3 style="margin-top:0;">📝 Submit Your paper</h3>
       <p>All submissions will be handled electronically via the OpenReview workshop submission website. 
 
@@ -751,11 +757,19 @@
       </table>
     </div>
 
-    <div class="card" style="margin-top:24px;">
+    <div class="card" id="participate" style="margin-top:24px;">
+      <h3 style="margin-top:0;">🏁 Participate</h3>
+      <p>Register below to participate in the workshop. Individual registrations are open to all researchers and students. If you are participating in the Grand Challenge with a team, provide your team name in the registration form.</p>
+      <div style="margin-top:20px;">
+        <a href="https://forms.gle/RrqBErvpWiQeXFH56" target="_blank" class="btn btn-primary">Register Now</a>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:32px;">
       <h3 style="margin-top:0;">&#128295; Participant Toolkit</h3>
 
       <p>Every registered participant will receive our <strong>Participant Toolkit</strong>: standardized data loaders, example inference and evaluation scripts on a suite of MLLM baseline models. </p>
-      
+
       <div style="margin-top:20px;">
         <a href="https://huggingface.co/datasets/facebook/wearable-ai" target="_blank" class="btn btn-primary">Download Dataset</a>
       </div>
@@ -773,14 +787,6 @@
 }</pre>
 
 
-    </div>
-
-    <div class="card" id="register" style="margin-top:32px;">
-      <h3 style="margin-top:0;">🏁 Participate</h3>
-      <p>Register below to participate in the workshop. Individual registrations are open to all researchers and students. If you are participating in the Grand Challenge with a team, provide your team name in the registration form.</p>
-      <div style="margin-top:20px;">
-        <a href="https://forms.gle/RrqBErvpWiQeXFH56" target="_blank" class="btn btn-primary">Register Now</a>
-      </div>
     </div>
   </div>
 </section>
@@ -823,7 +829,7 @@
     <p class="section-label">Workshop Committee</p>
     <h2>Organizers</h2>
     <p>The organizing committee brings together world-class researchers from Meta Reality Labs, the University of Edinburgh, HKUST, Georgia Tech, and UCF &mdash; spanning multimodal AI, computer vision, robotics, and conversational systems.</p>
-    <p>📧 Contact: <strong>wearable.ai.workshop at gmail.com</strong></p>
+    <p id="contact" style="scroll-margin-top:80px;">📧 Contact: <strong>wearable.ai.workshop at gmail.com</strong></p>
     <div class="people-grid">
       <div class="person-card">
         <div class="person-avatar"><img src="assets/images/harry.jpg" alt="Tuyen (Harry) Tran" onerror="this.style.display='none';this.parentElement.textContent='HT'" style="object-position: 51% 48%;"></div>
@@ -974,7 +980,7 @@
     </ul>
     <h3>Grand Challenge Submission</h3>
     <ul class="dates-timeline">
-      <li><span class="dt-event">Call for Paper Announcement</span><span class="dt-date">May 2026</span></li>
+      <li><span class="dt-event">Call for Papers Announcement</span><span class="dt-date">May 2026</span></li>
       <li><span class="dt-event">OpenReview Portal Opens</span><span class="dt-date">June 2026</span></li>
       <li><span class="dt-event">Paper Submission Deadline</span><span class="dt-date">July 25, 2026</span></li>
       <li><span class="dt-event">Notification of Paper Acceptance</span><span class="dt-date">Aug 8, 2026</span></li>
@@ -1024,6 +1030,17 @@
     } else {
       nav.classList.remove('scrolled');
     }
+  });
+
+  // ── Bidirectional hover for challenge + gif-preview pairs ──
+  document.querySelectorAll('.card-grid-3 > div').forEach(function(wrapper) {
+    var card = wrapper.querySelector('.challenge-card');
+    var gif = wrapper.querySelector('.gif-preview-card');
+    if (!card || !gif) return;
+    card.addEventListener('mouseenter', function() { gif.classList.add('pair-hover'); });
+    card.addEventListener('mouseleave', function() { gif.classList.remove('pair-hover'); });
+    gif.addEventListener('mouseenter', function() { card.classList.add('pair-hover'); });
+    gif.addEventListener('mouseleave', function() { card.classList.remove('pair-hover'); });
   });
 
   // ── Active nav highlight (click + scroll spy) ──
