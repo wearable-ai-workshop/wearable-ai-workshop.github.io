@@ -532,12 +532,12 @@
     <div class="chip"><span class="icon">&#128197;</span> September 2026</div>
     <div class="chip"><span class="icon">&#128205;</span> Malm&ouml;, Sweden</div>
     <div class="chip"><span class="icon">&#127942;</span> Cash Prizes</div>
-    <div class="chip"><span class="icon">&#127942;</span> Grand Challenge with 35K+ Videos Dataset</div>
+    <div class="chip"><span class="icon">&#127942;</span> EgoWearBench Grand Challenge</div>
   </div>
   <div class="cta-group">
     <a href="https://forms.gle/RrqBErvpWiQeXFH56" target="_blank" class="btn btn-primary">Register Now</a>
     <a href="#challenges" class="btn btn-outline">&#127942; View Challenges</a>
-      <a href="#challenges" class="btn btn-outline">&#128190; Explore Dataset</a>
+      <a href="#dataset" class="btn btn-outline">&#128190; Explore Dataset</a>
   </div>
 </section>
 
@@ -632,7 +632,7 @@
     <p class="section-label">Grand Challenge</p>
     <h2>Wearable AI Grand Challenge</h2>
     <p>Wearable AI is one of the most exciting and challenging frontiers in computer vision and AI today. Yet progress has been hampered by a lack of large-scale, realistic benchmarks that reflect the complexity of real-world egocentric experiences &mdash; long-duration video, proactive AI interactions, and multi-turn conversations. This grand challenge is designed to close that gap: to catalyze the community around concrete, measurable tasks and to reward reproducible, open-sourced breakthroughs.</p>
-    <p style="margin-top:12px;">In addition to general research paper submissions, our workshop features three specific grand challenge tasks. A total of <strong>$21,000 in cash prizes</strong> will be awarded to winners with reproducible, open-sourced results. The dev set is released as part of the challenge for the participants to iterate on their system. The test set (equal volume) is kept hidden for evaluation.</p>
+    <p style="margin-top:12px;">In addition to general research paper submissions, our workshop features three specific grand challenge tasks, each built on a matching collection from <a href="#dataset"><strong>EgoWearBench</strong></a> &mdash; the benchmark suite we are releasing for this challenge. A total of <strong>$21,000 in cash prizes</strong> will be awarded to winners with reproducible, open-sourced results. The dev set is released as part of the challenge for the participants to iterate on their system. The test set (equal volume) is kept hidden for evaluation.</p>
     <p>Be sure to review the <a href="challenge_rules.html">Official Challenge Rules</a> for complete details and to verify your eligibility to participate.</p>
     <div class="card-grid card-grid-3" style="margin-top:24px;">
       <div>
@@ -718,9 +718,9 @@
       </div>
     </div>
 
-    <div class="card" style="margin-top:32px;">
-      <h3 style="margin-top:0;">&#128190; Challenge Dataset</h3>
-      <p>To facilitate this challenge, we are releasing three newly annotated, large-scale Wearables AI collections that are the first to combine long-duration egocentric video with real user&ndash;assistant conversations and proactive AI annotations.</p>
+    <div class="card" id="dataset" style="margin-top:32px;">
+      <h3 style="margin-top:0;">&#128190; Challenge Dataset: EgoWearBench</h3>
+      <p>To facilitate this challenge, we are releasing three newly annotated, large-scale Wearables AI collections &mdash; one per challenge task &mdash; that are the first to combine long-duration egocentric video with real user&ndash;assistant conversations and proactive AI annotations. Together they form <strong>EgoWearBench</strong>, a single benchmark suite for evaluating wearable AI assistants end to end.</p>
       <table class="data-table" style="margin-top:16px;">
         <thead>
           <tr>
@@ -761,7 +761,7 @@
             <td class="cross">&#10007;</td>
           </tr>
           <tr class="ours" style="outline:2px solid var(--accent2); outline-offset:-1px;">
-            <td style="color:var(--accent2); font-weight:700;">Wearable AI</td>
+            <td style="color:var(--accent2); font-weight:700;">EgoWearBench (ours)</td>
             <td style="color:var(--accent2); font-weight:700;">&#10003;</td>
             <td style="color:var(--accent2); font-weight:700;">&#10003;</td>
             <td style="color:var(--accent2); font-weight:700;">&#10003;</td>
@@ -784,14 +784,14 @@
     <div class="card" style="margin-top:32px;">
       <h3 style="margin-top:0;">&#128295; Participant Toolkit</h3>
 
-      <p>Every registered participant will receive our <strong>Participant Toolkit</strong>: standardized data loaders, example inference and evaluation scripts on a suite of MLLM baseline models. </p>
+      <p>Every registered participant will receive our <strong>Participant Toolkit</strong>: standardized EgoWearBench data loaders, example inference and evaluation scripts on a suite of MLLM baseline models. </p>
 
       <div style="margin-top:20px;">
-        <a href="https://huggingface.co/datasets/facebook/wearable-ai" target="_blank" class="btn btn-primary">Download Dataset</a>
+        <a href="https://huggingface.co/datasets/facebook/wearable-ai" target="_blank" class="btn btn-primary">Download EgoWearBench</a>
       </div>
 
       <div style="margin-top:20px;">
-        <p>To use the dataset, please use the following citation:</p>
+        <p>To use EgoWearBench, please use the following citation:</p>
       </div>
 
 <pre style="display:inline-flex; align-items:center; gap:10px; background:rgba(255,200,50,0.08); border:1px solid rgba(255,200,50,0.35); color:#f5c842; padding:10px 16px; border-radius:8px; font-size:0.85rem; margin-top:4px; font-family:'Courier New', Courier, monospace; line-height:1.6; white-space:pre-wrap; word-break:break-word; overflow-x:hidden;">@misc{wearableaiworkshop2026,
