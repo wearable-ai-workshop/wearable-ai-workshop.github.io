@@ -263,6 +263,62 @@
     }
     .highlight-card p { color: var(--text); margin: 0; font-size: 1.05rem; }
 
+    /* ── Awards ── */
+    .award-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      border-radius: var(--radius);
+      padding: 18px 22px;
+      margin-top: 12px;
+    }
+    .award-card.best { border-left-color: #f5c842; }
+    .award-card .paper-title { color: #fff; font-weight: 600; margin-bottom: 4px; }
+    .award-card .paper-title a { color: #fff; }
+    .award-card .paper-title a:hover { color: var(--accent2); text-decoration: none; }
+    .award-card .paper-authors { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+    .award-card .paper-authors a { color: var(--text); border-bottom: 1px dotted var(--text-muted); }
+    .award-card .paper-authors a:hover { color: var(--accent2); border-bottom-color: var(--accent2); text-decoration: none; }
+
+    /* ── Grand Challenge winners table ── */
+    .winners-table td:first-child { color: var(--text); font-weight: 600; }
+    .winners-table .track-note { display: block; font-size: 0.75rem; font-weight: 400; color: var(--text-muted); }
+    .winners-table .winner-1st { color: #f5c842; font-weight: 700; }
+    .winners-table .winner-runner { color: var(--accent2); font-weight: 600; }
+
+    /* ── Past announcements (collapsible) ── */
+    .past-announcements {
+      margin-top: 36px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .past-announcements > summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 24px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+    .past-announcements > summary::-webkit-details-marker { display: none; }
+    .past-announcements > summary::before {
+      content: '\25B8';
+      display: inline-block;
+      color: var(--accent);
+      transition: transform 0.2s;
+    }
+    .past-announcements[open] > summary::before { transform: rotate(90deg); }
+    .past-announcements > summary:hover { color: var(--accent); }
+    .past-body { padding: 0 24px 24px; }
+    .past-item { border-top: 1px solid var(--border); margin-top: 24px; padding-top: 24px; }
+    .past-item:first-child { border-top: none; margin-top: 0; padding-top: 4px; }
+    .past-item > h3:first-child { margin-top: 0; }
+
     /* ── Topics ── */
     .topic-item {
       display: flex;
@@ -453,10 +509,9 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: var(--bg-card);
+      background: var(--accent);
       border: 2px solid var(--accent);
     }
-    .dates-timeline li.highlight::before { background: var(--accent); }
     .dates-timeline .dt-event { flex: 1; color: var(--text); }
     .dates-timeline .dt-date { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--accent3); white-space: nowrap; min-width: 130px; text-align: right; }
 
@@ -507,7 +562,7 @@
   <div class="nav-inner">
     <div class="nav-logo">Wearable<span>AI</span> @ ECCV'26</div>
     <ul>
-      <li><a href="#announcement">Announcement</a></li>
+      <li><a href="#announcement">Announcements</a></li>
       <li><a href="#overview">Overview</a></li>
       <li><a href="#topics">Topics</a></li>
       <li><a href="#challenges">Grand Challenge</a></li>
@@ -515,7 +570,6 @@
       <li><a href="#organizers">Organizers</a></li>
       <li><a href="#program">Program</a></li>
       <li><a href="#dates">Dates</a></li>
-      <li><a href="#participate">Register</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </div>
@@ -535,21 +589,140 @@
     <div class="chip"><span class="icon">&#127942;</span> EgoWearBench Grand Challenge</div>
   </div>
   <div class="cta-group">
-    <a href="https://forms.gle/RrqBErvpWiQeXFH56" target="_blank" class="btn btn-primary">Register Now</a>
+    <a href="#announcement" class="btn btn-primary">&#128227; Announcements</a>
     <a href="#challenges" class="btn btn-outline">&#127942; View Challenges</a>
       <a href="#dataset" class="btn btn-outline">&#128190; Explore Dataset</a>
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════ OVERVIEW ═══ -->
+<!-- ═══════════════════════════════════════════ ANNOUNCEMENTS ═══ -->
 <section id="announcement">
   <div class="container">
     <p class="section-label">Announcement</p>
-    <h2>The Grand Challenge Test Phase is Open</h2>
+    <h2>Congratulations to Our Winners and Accepted Authors</h2>
     <div class="highlight-card">
-      <p>&#128226; The <strong>Grand Challenge validation phase is now closed</strong> and the <strong>Grand Challenge test phase is open</strong>. Invited teams are listed on the <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener">Wearable-AI Leaderboard</a> under <strong>Leaderboard &rarr; Invited to Test Phase</strong>. If your team is listed there, register it under <strong>Submit &rarr; Test &rarr; Step 1</strong> to collect your registry credentials and read the submission instructions.</p>
+      <p>&#127881; Our <strong>Best Paper Award</strong> goes to <strong>Yeeun Choi, Youngbeom Yoo, Joon-Young Lee, Hyolim Kang, and Seon Joo Kim</strong> for <a href="https://arxiv.org/abs/2608.07663" target="_blank" rel="noopener"><em>Keep It Simple: Multi-Key Episodic Memory Retrieval for Ultra-Long Video Understanding</em></a>. Congratulations also to our three Honorable Mentions, to all <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/WearableAI#tab-accept" target="_blank" rel="noopener">accepted papers</a>, and to our <a href="#winners">Grand Challenge winners</a>.</p>
     </div>
-    <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener" class="btn btn-primary">&#127942; See the invited teams <span aria-hidden="true">&rarr;</span></a>
+
+    <h3>&#127942; Best Paper Award</h3>
+    <div class="award-card best">
+      <div class="paper-title"><a href="https://arxiv.org/abs/2608.07663" target="_blank" rel="noopener">Keep It Simple: Multi-Key Episodic Memory Retrieval for Ultra-Long Video Understanding</a></div>
+      <p class="paper-authors"><a href="https://choi-yeeun.github.io/MERIT" target="_blank" rel="noopener">Yeeun Choi</a>, <a href="https://sites.google.com/view/youngbeomyoo/home" target="_blank" rel="noopener">Youngbeom Yoo</a>, <a href="https://research.adobe.com/person/joon-young-lee/" target="_blank" rel="noopener">Joon-Young Lee</a>, <a href="https://sites.google.com/view/hyolim" target="_blank" rel="noopener">Hyolim Kang</a>, <a href="https://sites.google.com/site/seonjookim/" target="_blank" rel="noopener">Seon Joo Kim</a></p>
+    </div>
+
+    <h3>&#127881; Honorable Mention Awards</h3>
+    <div class="award-card">
+      <div class="paper-title"><a href="https://arxiv.org/abs/2604.20937" target="_blank" rel="noopener">Sink-Token-Aware Pruning for Fine-Grained Video Understanding in Efficient Video LLMs</a></div>
+      <p class="paper-authors"><a href="https://rlqja1107.github.io/" target="_blank" rel="noopener">Kibum Kim</a>, <a href="https://ptkjw1997.github.io/" target="_blank" rel="noopener">Jiwan Kim</a>, <a href="https://community.intel.com/t5/user/viewprofilepage/user-id/193058" target="_blank" rel="noopener">Kyle Min</a>, Yueqi Wang, <a href="https://www.csauthors.net/jinyoung-moon/" target="_blank" rel="noopener">Jinyoung Moon</a>, <a href="https://scholar.google.com/citations?user=icbo4M0AAAAJ&amp;hl=en" target="_blank" rel="noopener">Julian McAuley</a>, <a href="https://dsail.kaist.ac.kr/professor/" target="_blank" rel="noopener">Chanyoung Park</a></p>
+    </div>
+    <div class="award-card">
+      <div class="paper-title"><a href="https://openreview.net/forum?id=fuzuDk1mcd" target="_blank" rel="noopener">ViMoWear: Visual Motion-Guided sEMG-IMU Representation Learning for Subject-Independent Thumb Gesture Recognition</a></div>
+      <p class="paper-authors">Wenjuan Zhong, Chenfei Ma, <a href="https://www.ed.ac.uk/profile/kianoush-nazarpour" target="_blank" rel="noopener">Kianoush Nazarpour</a></p>
+    </div>
+    <div class="award-card">
+      <div class="paper-title"><a href="https://arxiv.org/abs/2606.09547" target="_blank" rel="noopener">Streaming Interventions: Can Video LLMs Correct Mistakes as They Occur?</a></div>
+      <p class="paper-authors">Apratim Bhattacharyya, <a href="https://vectorinstitute.ai/team/shweta-mahajan/" target="_blank" rel="noopener">Shweta Mahajan</a>, <a href="https://www.sanjayharesh.com/" target="_blank" rel="noopener">Sanjay Haresh</a>, Rajeev Yasarla, <a href="https://scholar.google.ca/citations?user=BqNYf-oAAAAJ&amp;hl=en" target="_blank" rel="noopener">Reza Pourreza</a>, <a href="https://openreview.net/profile?id=~Litian_Liu1" target="_blank" rel="noopener">Litian Liu</a>, <a href="https://risheekg.github.io/" target="_blank" rel="noopener">Risheek Garrepalli</a>, <a href="http://www-labs.iro.umontreal.ca/~memisevr/" target="_blank" rel="noopener">Roland Memisevic</a></p>
+    </div>
+
+    <div style="margin-top:20px;">
+      <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/WearableAI#tab-accept" target="_blank" rel="noopener" class="btn btn-primary">&#128221; View Accepted Papers <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <h3 id="winners" style="scroll-margin-top:80px;">&#127942; Grand Challenge Winners</h3>
+    <p>Winning and runner-up teams for each EgoWearBench task, across the Small and Large model divisions. Full standings are on the <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener">Wearable AI Leaderboard</a>.</p>
+    <table class="data-table winners-table">
+      <thead>
+        <tr>
+          <th>Challenge</th>
+          <th>Division</th>
+          <th>1st Place</th>
+          <th>Runner-up</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>EgoProactive <span class="track-note">Proactive AI</span></td>
+          <td>Small</td>
+          <td class="winner-1st">hippo</td>
+          <td class="winner-runner">ambient</td>
+        </tr>
+        <tr>
+          <td>EgoProactive <span class="track-note">Proactive AI</span></td>
+          <td>Large</td>
+          <td class="winner-1st">ambient</td>
+          <td class="winner-runner">fufu</td>
+        </tr>
+        <tr>
+          <td>EgoConv <span class="track-note">Multi-turn Conversations</span></td>
+          <td>Small</td>
+          <td class="winner-1st">perch ai</td>
+          <td class="winner-runner">everydayintelligence</td>
+        </tr>
+        <tr>
+          <td>EgoConv <span class="track-note">Multi-turn Conversations</span></td>
+          <td>Large</td>
+          <td class="winner-1st">omer</td>
+          <td class="winner-runner">sololevelling</td>
+        </tr>
+        <tr>
+          <td>EgoLongQA <span class="track-note">Long Video Q&amp;A</span></td>
+          <td>Small</td>
+          <td class="winner-1st">ambient</td>
+          <td class="winner-runner">smartkaist</td>
+        </tr>
+        <tr>
+          <td>EgoLongQA <span class="track-note">Long Video Q&amp;A</span></td>
+          <td>Large</td>
+          <td class="winner-1st">perch ai</td>
+          <td class="winner-runner">omer</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:24px;">
+      <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener" class="btn btn-primary">&#127942; View Leaderboard <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <details class="past-announcements">
+      <summary>Past announcements</summary>
+      <div class="past-body">
+
+        <div class="past-item">
+          <h3>The Grand Challenge Test Phase is Open</h3>
+          <div class="highlight-card" style="margin-bottom:20px;">
+            <p>&#128226; The <strong>Grand Challenge validation phase is now closed</strong> and the <strong>Grand Challenge test phase is open</strong>. Invited teams are listed on the <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener">Wearable-AI Leaderboard</a> under <strong>Leaderboard &rarr; Invited to Test Phase</strong>. If your team is listed there, register it under <strong>Submit &rarr; Test &rarr; Step 1</strong> to collect your registry credentials and read the submission instructions.</p>
+          </div>
+          <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener" class="btn btn-primary">&#127942; See the invited teams <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="past-item" id="submit" style="scroll-margin-top:80px;">
+          <h3>Call for Papers</h3>
+          <h3 style="margin-top:12px;">📝 Submit Your paper</h3>
+          <p>All submissions will be handled electronically via the <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/WearableAI">OpenReview workshop submission website</a>.
+          Manuscripts must follow the <a href="https://eccv.ecva.net/Conferences/2026/CallForPapers">ECCV Main Conference format</a>.
+          </p>
+          <p>
+          We accept submissions under two separate tracks: (a) <strong>Archival track</strong>, where accepted papers will appear in the ECCV Workshop Proceedings and must therefore abide by ECCV policy; and (b) <strong>Non-archival track</strong>, where accepted papers will be featured at the workshop but not included in the proceedings, allowing submission of work that has appeared or is under review elsewhere. Both tracks are evaluated under the same criteria for novelty and soundness.
+          </p>
+          <p>
+          The page limit for both tracks is 14 pages (+ unlimited reference section). We invite submissions of novel, technically rigorous work that advances the state of the art in wearable and multimodal AI. In the spirit of open scientific exchange, we also encourage early-stage and exploratory work, including negative or null results that yield valuable insights for the community.
+          </p>
+          <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/WearableAI#tab-recent-activity" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:8px;">&#128221; Submit on OpenReview <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="past-item" id="participate" style="scroll-margin-top:80px;">
+          <h3>Call for Participation</h3>
+          <h3 style="margin-top:12px;">🏁 Participate</h3>
+          <p>Register below to participate in the workshop. Individual registrations are open to all researchers and students. If you are participating in the Grand Challenge with a team, provide your team name in the registration form.</p>
+          <p style="margin-top:12px;">All Grand Challenge entries are submitted through the <strong>Wearable AI Leaderboard</strong> on Hugging Face Spaces. Upload your <code>predictions.jsonl</code>, get scored on the public validation set, and track your standing against other teams in real time.</p>
+          <div style="margin-top:20px; display:inline-flex; flex-wrap:wrap; gap:12px;">
+            <a href="https://forms.gle/RrqBErvpWiQeXFH56" target="_blank" class="btn btn-primary">Register Now</a>
+            <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" class="btn btn-primary">&#127942; Submit &amp; View Leaderboard</a>
+          </div>
+        </div>
+
+      </div>
+    </details>
   </div>
 </section>
 
@@ -576,8 +749,8 @@
 <!-- ═══════════════════════════════════════════ TOPICS ═══ -->
 <section id="topics">
   <div class="container">
-    <p class="section-label">Research Areas</p>
-    <h2>Call for Papers</h2>
+    <p class="section-label">Topics</p>
+    <h2>Research Areas</h2>
     <p>The workshop welcomes submissions on the following topics, among others:</p>
     <div class="topic-item">
       <div class="topic-dot"></div>
@@ -603,26 +776,6 @@
       <div class="topic-dot" style="background:var(--accent3)"></div>
       <div><strong>Auxiliary Sensor Signals from Wearables</strong> Learning contextualized signals from diverse wearable devices (e.g., EMG, IMU motion sensors), augmented to the primary vision signals for various assistant use cases.</div>
     </div>
-
-    <div class="card" id="submit" style="margin-top:32px;">
-      <h3 style="margin-top:0;">📝 Submit Your paper</h3>
-      <p>All submissions will be handled electronically via the <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/WearableAI">OpenReview workshop submission website</a>. 
-      Manuscripts must follow the <a href="https://eccv.ecva.net/Conferences/2026/CallForPapers">ECCV Main Conference format</a>. 
-      </p>
-      <p>
-      We accept submissions under two separate tracks: (a) <strong>Archival track</strong>, where accepted papers will appear in the ECCV Workshop Proceedings and must therefore abide by ECCV policy; and (b) <strong>Non-archival track</strong>, where accepted papers will be featured at the workshop but not included in the proceedings, allowing submission of work that has appeared or is under review elsewhere. Both tracks are evaluated under the same criteria for novelty and soundness.
-      </p>
-      <p>
-      The page limit for both tracks is 14 pages (+ unlimited reference section). We invite submissions of novel, technically rigorous work that advances the state of the art in wearable and multimodal AI. In the spirit of open scientific exchange, we also encourage early-stage and exploratory work, including negative or null results that yield valuable insights for the community.
-      </p>
-
-      <a href="https://openreview.net/group?id=thecvf.com/ECCV/2026/Workshop/WearableAI#tab-recent-activity" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:8px;">&#128221; Submit on OpenReview <span aria-hidden="true">&rarr;</span></a>
-
-    </div>
-
-
-
-
   </div>
 </section>
 
@@ -771,16 +924,6 @@
       </table>
     </div>
 
-    <div class="card" id="participate" style="margin-top:24px;">
-      <h3 style="margin-top:0;">🏁 Participate</h3>
-      <p>Register below to participate in the workshop. Individual registrations are open to all researchers and students. If you are participating in the Grand Challenge with a team, provide your team name in the registration form.</p>
-      <p style="margin-top:12px;">All Grand Challenge entries are submitted through the <strong>Wearable AI Leaderboard</strong> on Hugging Face Spaces. Upload your <code>predictions.jsonl</code>, get scored on the public validation set, and track your standing against other teams in real time.</p>
-      <div style="margin-top:20px; display:inline-flex; flex-wrap:wrap; gap:12px;">
-        <a href="https://forms.gle/RrqBErvpWiQeXFH56" target="_blank" class="btn btn-primary">Register Now</a>
-        <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" class="btn btn-primary">&#127942; Submit &amp; View Leaderboard</a>
-      </div>
-    </div>
-
     <div class="card" style="margin-top:32px;">
       <h3 style="margin-top:0;">&#128295; Participant Toolkit</h3>
 
@@ -811,7 +954,7 @@
 <section id="speakers">
   <div class="container">
     <p class="section-label">Invited Talks</p>
-    <h2>Confirmed Keynote Speakers</h2>
+    <h2>Keynote Speakers</h2>
     <div class="people-grid">
       <div class="person-card">
         <div class="person-avatar"><img src="assets/images/kristen_grauman.jpg" alt="Kristen Grauman" onerror="this.style.display='none';this.parentElement.textContent='KG'" style="object-position: 52% 40%;"></div>
@@ -977,12 +1120,12 @@
 
     <h3>Grand Challenge Submission</h3>
     <ul class="dates-timeline">
-      <li class="highlight"><span class="dt-event">Dataset &amp; Challenge Release</span><span class="dt-date">May 2026</span></li>
+      <li><span class="dt-event">Dataset &amp; Challenge Release</span><span class="dt-date">May 2026</span></li>
       <li><span class="dt-event">Validation Phase Deadline &mdash; closed</span><span class="dt-date">Aug 7, 2026</span></li>
-      <li class="highlight"><span class="dt-event">Test Phase Begins &mdash; open now. Invited teams collect their Docker template and registry credentials on the <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener">leaderboard</a>.</span><span class="dt-date">Aug 8, 2026</span></li>
+      <li><span class="dt-event">Test Phase Begins &mdash; open now. Invited teams collect their Docker template and registry credentials on the <a href="https://huggingface.co/spaces/facebook/wearable-ai-leaderboard" target="_blank" rel="noopener">leaderboard</a>.</span><span class="dt-date">Aug 8, 2026</span></li>
       <li><span class="dt-event">Test Phase Submission Deadline</span><span class="dt-date">Aug 15, 2026</span></li>
       <li><span class="dt-event">Notification of Challenge Winners</span><span class="dt-date">Aug 22, 2026</span></li>
-      <li class="highlight"><span class="dt-event">Workshop</span><span class="dt-date">September 8-9, 2026</span></li>
+      <li><span class="dt-event">Workshop</span><span class="dt-date">September 8-9, 2026</span></li>
     </ul>
     <h3>Paper Submission</h3>
     <ul class="dates-timeline">
@@ -991,12 +1134,12 @@
       <li><span class="dt-event">Paper Submission Deadline</span><span class="dt-date">July 25, 2026</span></li>
       <li><span class="dt-event">Notification of Paper Acceptance</span><span class="dt-date">Aug 8, 2026</span></li>
       <li><span class="dt-event">Camera-Ready Paper Deadline</span><span class="dt-date">August 15, 2026</span></li>
-      <li class="highlight"><span class="dt-event">Workshop</span><span class="dt-date">September 8-9, 2026</span></li>
+      <li><span class="dt-event">Workshop</span><span class="dt-date">September 8-9, 2026</span></li>
     </ul>    
   </div>
 </section>
 
-<!-- Registration is embedded inside the Grand Challenge section above -->
+<!-- Registration and the call for papers now live under Past announcements in the Announcements section -->
 
 <!-- ═══════════════════════════════════════════ FOOTER ═══ -->
 <footer>
@@ -1048,6 +1191,21 @@
     gif.addEventListener('mouseenter', function() { card.classList.add('pair-hover'); });
     gif.addEventListener('mouseleave', function() { card.classList.remove('pair-hover'); });
   });
+
+  // ── Expand past announcements when linked to an item inside them ──
+  function revealPastAnnouncement() {
+    var id = window.location.hash.slice(1);
+    if (!id) return;
+    var target = document.getElementById(id);
+    if (!target) return;
+    var details = target.closest('details');
+    if (details && !details.open) {
+      details.open = true;
+      target.scrollIntoView();
+    }
+  }
+  window.addEventListener('hashchange', revealPastAnnouncement);
+  revealPastAnnouncement();
 
   // ── Active nav highlight (click + scroll spy) ──
   var navLinks = Array.from(document.querySelectorAll('nav ul li a[href^="#"]'));
